@@ -764,6 +764,109 @@ app.post('/api/users', (req, res) => {
     });
   });
 
+  // GET all activity logs
+app.get('/api/activity-logs', (req, res) => {
+    const query = 'SELECT * FROM activity_log';
+    db.query(query, (err, results) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.json(results);
+    });
+  });
+  
+  // POST bursary funds
+  app.post('/api/bursary-funds', (req, res) => {
+    const { amount } = req.body;
+  
+    if (!amount || isNaN(amount)) {
+      return res.status(400).json({ message: 'Invalid amount provided' });
+    }
+  
+    const query = 'INSERT INTO bursary_funds (amount) VALUES (?)';
+    db.query(query, [amount], (err, result) => {
+      if (err) {
+        console.error('Error inserting data:', err);
+        return res.status(500).json({ message: 'Server error' });
+      }
+      res.status(200).json({ message: 'Funds disbursed successfully' });
+    });
+  });
+  
+  // PUT adjust bursary fund allocation
+  app.put('/api/adjust-funds', (req, res) => {
+    const { amount } = req.body;
+    const id = 1; // Assuming there's only one row, you can hardcode the ID
+  
+    const updateQuery = 'UPDATE bursary_funds SET amount = ? WHERE id = ?';
+  
+    db.query(updateQuery, [amount, id], (err, result) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.status(200).json({ message: 'Fund allocation adjusted successfully!' });
+    });
+  });
+  
+  // GET user report by ID
+  app.get('/api/user-report/:id', (req, res) => {
+    const query = `
+      SELECT fullname, admission_number AS admission, institution, status, 
+      bursary AS amountAllocated
+      FROM personal_details 
+      WHERE user_id = ?;
+    `;
+  
+    const userId = req.params.id;
+  
+    db.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error('Error fetching user data:', err.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+  
+      if (results.length > 0) {
+        res.json(results[0]);
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    });
+  });
+  
+  // GET profile committee data (with token authentication)
+  app.get('/api/profile-committee', (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(403).send('Token is required');
+  
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized access');
+  
+      const sqlGet = `
+        SELECT fullname, email, phone_no, national_id, subcounty, 
+        ward, position, 
+        CASE 
+          WHEN fullname IS NULL OR phone_no IS NULL OR national_id IS NULL THEN 0
+          ELSE 1
+        END AS is_complete
+        FROM profile_committee 
+        WHERE email = ?
+      `;
+  
+      db.query(sqlGet, [decoded.email], (err, result) => {
+        if (err) {
+          console.error('Error fetching committee data:', err);
+          return res.status(500).send('Error fetching data');
+        }
+  
+        if (result.length === 0) {
+          return res.status(404).send('Profile not found');
+        }
+  
+        res.json(result[0]);
+      });
+    });
+  });
+  
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
