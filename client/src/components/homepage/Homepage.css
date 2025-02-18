@@ -78,6 +78,16 @@ object-fit: cover;
 margin-top: 60px;
 }
 
+.container-fluid{
+background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\about.jpg');
+background-size: cover;
+background-position:center;
+background-repeat:no-repeat;
+width:100%;
+height:60vh;
+margin-top:60px;
+color:white;
+}
 
 .blur{
 background:rgba(0, 0, 0, 0.5) ;
@@ -97,7 +107,16 @@ margin-top: 10px;
         margin-top: 30px;
         }
 
-
+        .container-fluid{
+            background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\about.jpg');
+            background-size: cover;
+            background-position:center;
+            background-repeat:no-repeat;
+            width:100%;
+            height:40vh;
+            margin-top:60px;
+            color:white;
+            }
 
 
         
