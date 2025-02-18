@@ -65,6 +65,26 @@ app.get("/api/verify-password", authenticateToken, async (req, res) => {
   }
 });
 
+app.post("/api/post", async (req, res) => {
+    try {
+      const { name, email, password, role } = req.body;
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
+      const sqlInsert = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
+      db.query(sqlInsert, [name, email, hashedPassword, role], (error, result) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: "Error inserting user" });
+        }
+        res.status(200).json({ message: "Admin registered successfully" });
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
