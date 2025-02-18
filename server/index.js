@@ -699,6 +699,71 @@ app.get("/api/get-bursary", (req, res) => {
     });
   });
 
+  // POST add a new user
+app.post('/api/users', (req, res) => {
+    const { fullname, email, password, role } = req.body;
+  
+    if (!fullname || !email || !password || !role) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+  
+    const saltRounds = 10; // You can adjust the cost factor (10 is recommended)
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Error hashing password' });
+      }
+      const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
+      db.query(query, [fullname, email, hashedPassword, role], (err, result) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+  
+        // Insert into activity logs
+        const logQuery = 'INSERT INTO activity_log (log_message) VALUES (?)';
+        db.query(logQuery, [`Added new user ${fullname}`], (logErr) => {
+          if (logErr) {
+            return res.status(500).json({ message: 'Error logging activity' });
+          }
+          res.status(201).json({ message: 'User added', userId: result.insertId });
+        });
+      });
+    });
+  });
+  
+  // DELETE a user
+  app.delete('/api/users/:id', (req, res) => {
+    const userId = req.params.id;
+  
+    // First, get the user's full name before deleting them
+    const selectQuery = 'SELECT name FROM users WHERE id = ?';
+    db.query(selectQuery, [userId], (err, result) => {
+      if (err || result.length === 0) {
+        return res.status(500).json({ message: 'Error fetching user or user not found' });
+      }
+  
+      const userFullName = result[0].name;
+  
+      // Proceed with deleting the user
+      const deleteQuery = 'DELETE FROM users WHERE id = ?';
+      db.query(deleteQuery, [userId], (err, result) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+  
+        // Insert the user's name into the activity log after deletion
+        const logQuery = 'INSERT INTO activity_log (log_message) VALUES (?)';
+        db.query(logQuery, [`Deleted user ${userFullName}`], (logErr) => {
+          if (logErr) {
+            return res.status(500).json({ message: 'Error logging activity' });
+          }
+  
+          res.status(200).json({ message: 'User deleted' });
+        });
+      });
+    });
+  });
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
