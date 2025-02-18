@@ -643,7 +643,62 @@ app.get("/api/get-document/:id", (req, res) => {
       }
     });
   });
+
+  // Get all bursary information (join tables uploaded_document and personal_details)
+app.get("/api/get-bursary", (req, res) => {
+    const sqlGetAll = `
+      SELECT 
+        ud.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        uploaded_document ud
+      JOIN 
+        personal_details pd 
+      ON 
+        ud.user_id = pd.user_id;
+    `;
   
+    db.query(sqlGetAll, (error, result) => {
+      if (error) {
+        console.error("Error fetching amount details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
+  // Update user status and allocation date with both date and time
+  app.put('/api/update-bursary/:id', (req, res) => {
+    const userId = req.params.id;
+    const { bursary } = req.body; // The amount allocated is sent from the frontend
+  
+    const query = `
+      UPDATE personal_details 
+      SET bursary = ?, allocation_date = CURRENT_TIMESTAMP 
+      WHERE user_id = ?;
+    `;
+  
+    db.query(query, [bursary, userId], (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: 'Error updating bursary and date' });
+      }
+      res.json({ 
+        message: `Allocated Ksh ${bursary} on ${new Date().toISOString()}` 
+      });
+    });
+  });
+  
+  // GET all users
+  app.get('/api/users', (req, res) => {
+    const query = 'SELECT * FROM users';
+    db.query(query, (err, results) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.json(results);
+    });
+  });
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
