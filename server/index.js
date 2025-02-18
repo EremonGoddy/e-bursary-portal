@@ -288,7 +288,68 @@ app.post('/api/forgot-password', async (req, res) => {
     }
   });
   
+// Endpoint to fetch student details
+app.get("/api/student", (req, res) => {
+    const token = req.headers["authorization"];
+    if (!token) return res.status(403).send("Token is required");
+  
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) return res.status(401).send("Unauthorized access");
+  
+      const sqlGet = `
+      SELECT fullname, email, subcounty, ward, village, 
+      DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
+      gender, institution, year, admission, status, bursary
+      FROM personal_details 
+      WHERE email = ?
+      `;
+      db.query(sqlGet, [decoded.email], (err, students) => {
+        if (err) {
+          console.error("Error fetching data:", err);
+          return res.status(500).send("Error fetching data");
+        }
+        res.json(students[0]); // Only return the specific student's details
+      });
+    });
+  });
+  
+  // Endpoint to fetch report details
+  app.get("/api/reports", (req, res) => {
+    const token = req.headers["authorization"];
+    if (!token) return res.status(403).send("Token is required");
+  
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) return res.status(401).send("Unauthorized access");
+  
+      const sqlGet = `
+      SELECT 
+      CONCAT('REFXE', LPAD(user_id, 2, '0')) AS reference_number,  -- Generate the reference number
+      fullname, 
+      email, 
+      subcounty, 
+      ward, 
+      village, 
+      DATE_FORMAT(birth, '%Y-%m-%d') AS birth, 
+      gender, 
+      institution, 
+      year, 
+      admission, 
+      status, 
+      bursary
+      FROM personal_details 
+      WHERE email = ?
+      `;
+      db.query(sqlGet, [decoded.email], (err, students) => {
+        if (err) {
+          console.error("Error fetching data:", err);
+          return res.status(500).send("Error fetching data");
+        }
+        res.json(students[0]); // Only return the specific student's details
+      });
+    });
+  });
 
+  
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
