@@ -349,6 +349,71 @@ app.get("/api/student", (req, res) => {
     });
   });
 
+  // PUT route to update student profile
+app.put("/api/student/update", (req, res) => {
+    const token = req.headers["authorization"];
+    if (!token) return res.status(403).send("Token is required");
+  
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) return res.status(401).send("Unauthorized access");
+  
+      const { fullname, email, subcounty, ward, village, birth, gender, institution, year, admission } = req.body;
+  
+      // Convert birth to 'YYYY-MM-DD' format if it exists
+      const formattedBirth = birth ? new Date(birth).toISOString().split("T")[0] : null;
+  
+      const sqlUpdate = `
+        UPDATE personal_details 
+        SET fullname = ?, email = ?, subcounty = ?, ward = ?, village = ?, birth = ?, gender = ?, institution = ?, year = ?, admission = ? 
+        WHERE email = ?
+      `;
+  
+      db.query(
+        sqlUpdate,
+        [fullname, email, subcounty, ward, village, formattedBirth, gender, institution, year, admission, decoded.email],
+        (err, result) => {
+          if (err) {
+            console.error("Error updating data:", err);
+            return res.status(500).send("Error updating data");
+          }
+          res.send({ message: "Profile updated successfully", data: req.body });
+        }
+      );
+    });
+  });
+  
+  // GET route to fetch allocated and remaining funds
+  app.get("/api/committee-count", (req, res) => {
+    const queryTotalFunds = "SELECT amount FROM bursary_funds WHERE id = 1";
+    const queryAllocatedFunds = "SELECT SUM(bursary) AS total_allocated FROM personal_details";
+  
+    db.query(queryTotalFunds, (err, totalResult) => {
+      if (err) {
+        return res.status(500).send({ error: "Error fetching total funds" });
+      }
+  
+      if (totalResult.length > 0) {
+        const totalAmount = totalResult[0].amount;
+  
+        db.query(queryAllocatedFunds, (err, allocatedResult) => {
+          if (err) {
+            return res.status(500).send({ error: "Error fetching allocated funds" });
+          }
+  
+          const allocatedAmount = allocatedResult[0].total_allocated || 0;
+          const remainingAmount = totalAmount - allocatedAmount;
+  
+          res.status(200).json({
+            amount: totalAmount,
+            allocated: allocatedAmount,
+            remaining: remainingAmount,
+          });
+        });
+      } else {
+        res.status(404).json({ error: "No bursary fund found" });
+      }
+    });
+  });
   
 // Default route
 app.get("/", (req, res) => {
