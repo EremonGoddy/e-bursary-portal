@@ -245,6 +245,48 @@ app.get("/api/admin-details", (req, res) => {
     });
   });
   
+  // Endpoint for forgot password
+app.post('/api/forgot-password', async (req, res) => {
+    const { identifier } = req.body;
+  
+    if (!identifier) {
+      return res.status(400).json({ error: 'Email is required.' });
+    }
+  
+    // Generate a random 6-digit reset code
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+  
+    try {
+      // Configure Nodemailer
+      const transporter = nodemailer.createTransport({
+        service: 'gmail', // Use your email service
+        auth: {
+          user: process.env.EMAIL_USER, // Your email
+          pass: process.env.EMAIL_PASSWORD, // Your email password or app password
+        },
+      });
+  
+      // Email options
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: identifier, // User's email
+        subject: 'Password Reset Code',
+        text: `Your password reset code is: ${resetCode}`,
+      };
+  
+      // Send email
+      await transporter.sendMail(mailOptions);
+  
+      console.log(`Reset code sent to ${identifier}: ${resetCode}`);
+      res.status(200).json({ message: 'Reset code sent successfully.' });
+  
+      // Save reset code to the database or in-memory store (not implemented here)
+      // This step ensures you can validate the code when the user submits it
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ error: 'Failed to send reset code. Please try again later.' });
+    }
+  });
   
 
 // Default route
