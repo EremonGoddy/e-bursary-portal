@@ -414,6 +414,91 @@ app.put("/api/student/update", (req, res) => {
       }
     });
   });
+
+  // Route to get quick statistics (total, approved, rejected)
+app.get("/api/quick-statistics", (req, res) => {
+    const queryTotal = "SELECT COUNT(*) AS total FROM personal_details";
+    const queryApproved = 'SELECT COUNT(*) AS approved FROM personal_details WHERE status = "approved"';
+    const queryRejected = 'SELECT COUNT(*) AS rejected FROM personal_details WHERE status = "rejected"';
+  
+    db.query(queryTotal, (err, totalResult) => {
+      if (err) {
+        return res.status(500).send({ error: "Error fetching total applications" });
+      }
+  
+      const totalApplications = totalResult[0].total;
+  
+      db.query(queryApproved, (err, approvedResult) => {
+        if (err) {
+          return res.status(500).send({ error: "Error fetching approved applications" });
+        }
+  
+        const approvedApplications = approvedResult[0].approved;
+  
+        db.query(queryRejected, (err, rejectedResult) => {
+          if (err) {
+            return res.status(500).send({ error: "Error fetching rejected applications" });
+          }
+  
+          const rejectedApplications = rejectedResult[0].rejected;
+  
+          res.status(200).json({ total: totalApplications, approved: approvedApplications, rejected: rejectedApplications });
+        });
+      });
+    });
+  });
+  
+  // Route to fetch all personal information
+  app.get("/api/personalInformation", (req, res) => {
+    const sqlGet = "SELECT * FROM personal_details";
+    db.query(sqlGet, (error, result) => {
+      res.send(result);
+    });
+  });
+  
+  // Route to fetch personal information for a specific user
+  app.get("/api/personalInformation/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log(userId);
+    const sqlGet = "SELECT * FROM personal_details WHERE user_id = ?";
+  
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching family and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
+  // Route to fetch amount information for a specific user
+  app.get("/api/amountInformation/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log(userId);
+    const sqlGet = `
+      SELECT 
+        ad.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        amount_details ad
+      JOIN 
+        personal_details pd 
+      ON 
+        ad.user_id = pd.user_id
+      WHERE 
+        pd.user_id = ?
+    `; // Join family_details with personal_details using the admission number
+  
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching family and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
   
 // Default route
 app.get("/", (req, res) => {
