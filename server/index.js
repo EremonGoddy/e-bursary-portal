@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const serverless = require("serverless-http");
 
 const app = express();
 
@@ -550,6 +551,30 @@ app.get("/api/familyInformation/:id", (req, res) => {
       }
     });
   });
+
+  // Setup multer for file upload
+const storage = multer.memoryStorage(); // Use memoryStorage for serverless
+const upload = multer({ storage: storage });
+
+// API endpoint to handle file uploads
+app.post("/api/upload", upload.single("document"), (req, res) => {
+  const { documentName } = req.body;
+  const document = req.file;
+
+  if (!document) {
+    return res.status(400).send("No file uploaded");
+  }
+
+  // Insert into the database (use a temporary file path or S3 for file storage in serverless)
+  const query = `INSERT INTO uploaded_document (document_name, file_path) VALUES (?, ?)`;
+  db.query(query, [documentName, document.buffer], (err, result) => {
+    if (err) {
+      console.error("Error saving to database:", err);
+      return res.status(500).send("Database error");
+    }
+    res.status(200).send("File uploaded and saved to database successfully");
+  });
+});
    
 // Default route
 app.get("/", (req, res) => {
@@ -557,4 +582,4 @@ app.get("/", (req, res) => {
 });
 
 // Export the app for serverless deployment
-module.exports = app;
+module.exports.handler = serverless(app);
