@@ -146,6 +146,85 @@ app.post('/api/personal-details', (req, res) => {
     });
   });
 
+  // Sign-in API route
+app.post("/api/signin", (req, res) => {
+    const { email, password } = req.body;
+  
+    const sqlSelect = "SELECT * FROM users WHERE email = ?";
+    db.query(sqlSelect, [email], (error, result) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Server error" });
+      }
+  
+      if (result.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const user = result[0];
+  
+      // Directly compare the password from input with the database stored password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ message: "Error comparing passwords" });
+        }
+  
+        if (isMatch) {
+          // First, check if the user is a student by looking in personal_details table
+          const sqlGetStudent = "SELECT * FROM personal_details WHERE email = ?";
+          db.query(sqlGetStudent, [user.email], (err, studentResult) => {
+            if (err) {
+              console.error("Error fetching student details:", err);
+              return res.status(500).send("Error fetching student data");
+            }
+  
+            // Fetch committee details from profile_committee table if the user is a committee member
+            const sqlGetCommittee = "SELECT * FROM profile_committee WHERE email = ?";
+            db.query(sqlGetCommittee, [user.email], (err, committeeResult) => {
+              if (err) {
+                console.error("Error fetching committee details:", err);
+                return res.status(500).send("Error fetching committee data");
+              }
+  
+              // Generate JWT token
+              const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, {
+                expiresIn: "1h",
+              });
+  
+              const response = {
+                message: "Login successful",
+                token,
+                role: user.role,
+              };
+  
+              // If student details exist, add them to the response
+              if (studentResult.length > 0) {
+                response.student = studentResult[0];
+              }
+  
+              // If committee details exist, add them to the response
+              if (committeeResult.length > 0) {
+                response.committee = {
+                  fullname: committeeResult[0].fullname,
+                  email: committeeResult[0].email,
+                  phone_no: committeeResult[0].phone_no,
+                  national_id: committeeResult[0].national_id,
+                  subcounty: committeeResult[0].subcounty,
+                  ward: committeeResult[0].ward,
+                  position: committeeResult[0].position,
+                };
+              }
+  
+              res.status(200).json(response);
+            });
+          });
+        } else {
+          res.status(401).json({ message: "Invalid email or password" });
+        }
+      });
+    });
+  });
   
 
 // Default route
