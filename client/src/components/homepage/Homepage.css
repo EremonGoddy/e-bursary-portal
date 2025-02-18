@@ -79,7 +79,7 @@ margin-top: 60px;
 }
 
 .container-fluid{
-background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\image\about.jpg');
+background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\about.jpg');
 background-size: cover;
 background-position:center;
 background-repeat:no-repeat;
@@ -90,7 +90,7 @@ color:white;
 }
 
 .container-fluid1{
-background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\image\payment.jpg');
+background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\payment.jpg');
     background-size: cover;
     background-position:center;
     background-repeat:no-repeat;
@@ -100,7 +100,7 @@ background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\i
     color:white;
     }
     .container-fluid1{
-      background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\image\contact.jpg');
+      background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\contact.jpg');
           background-size: cover;
           background-position:center;
           background-repeat:no-repeat;
@@ -130,7 +130,7 @@ margin-top: 10px;
         }
 
 .container-fluid{
-background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\image\about.jpg');
+background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\about.jpg');
 background-size: cover;
 background-position:center;
 background-repeat:no-repeat;
@@ -141,7 +141,7 @@ color:white;
 }
 
 .container-fluid1{
-background-image:url('C:\Users\eremo\Desktop\e-bursary main\client-side\public\image\payment.jpg');
+background-image:url('C:\Users\eremo\Desktop\bursary-portal\client\src\assets\payment.jpg');
 background-size: cover;
 background-position:center;
 background-repeat:no-repeat;
