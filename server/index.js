@@ -499,6 +499,86 @@ app.get("/api/quick-statistics", (req, res) => {
     });
   });
   
+ // Route to get family information for a specific user
+app.get("/api/familyInformation/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log("User ID:", userId);
+    const sqlGet = `
+      SELECT 
+        fd.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        family_details fd
+      JOIN 
+        personal_details pd 
+      ON 
+        fd.user_id = pd.user_id
+      WHERE pd.user_id = ?
+    `; // Join family_details with personal_details using the user_id
+    
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching family and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
+  // Route to get disclosure information for a specific user
+  app.get("/api/disclosureInformation/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log("User ID:", userId);
+    const sqlGet = `
+      SELECT 
+        dd.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        disclosure_details dd
+      JOIN 
+        personal_details pd 
+      ON 
+        dd.user_id = pd.user_id
+      WHERE pd.user_id = ?
+    `; // Join disclosure_details with personal_details using the user_id
+  
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching disclosure and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
+  // Setup multer for file upload
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/"); // Upload folder
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + "-" + file.originalname); // unique file name
+    }
+  });
+  
+  const upload = multer({ storage: storage });
+  
+  // API endpoint to handle file uploads
+  app.post("/api/upload", upload.single("document"), (req, res) => {
+    const { documentName } = req.body;
+    const document = req.file;
+  
+    // Insert into the database
+    const query = `INSERT INTO uploaded_document (document_name, file_path) VALUES (?, ?)`;
+    db.query(query, [documentName, document.path], (err, result) => {
+      if (err) {
+        console.error("Error saving to database:", err);
+        return res.status(500).send("Database error");
+      }
+      res.status(200).send("File uploaded and saved to database successfully");
+    });
+  });
+
   
 // Default route
 app.get("/", (req, res) => {
