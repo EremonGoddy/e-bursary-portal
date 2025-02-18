@@ -550,36 +550,7 @@ app.get("/api/familyInformation/:id", (req, res) => {
       }
     });
   });
-  
-  // Setup multer for file upload
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads/"); // Upload folder
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname); // unique file name
-    }
-  });
-  
-  const upload = multer({ storage: storage });
-  
-  // API endpoint to handle file uploads
-  app.post("/api/upload", upload.single("document"), (req, res) => {
-    const { documentName } = req.body;
-    const document = req.file;
-  
-    // Insert into the database
-    const query = `INSERT INTO uploaded_document (document_name, file_path) VALUES (?, ?)`;
-    db.query(query, [documentName, document.path], (err, result) => {
-      if (err) {
-        console.error("Error saving to database:", err);
-        return res.status(500).send("Database error");
-      }
-      res.status(200).send("File uploaded and saved to database successfully");
-    });
-  });
-
-  
+   
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
