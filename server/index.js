@@ -85,6 +85,67 @@ app.post("/api/post", async (req, res) => {
     }
   });
 
+  // POST API routes
+app.post('/api/personal-details', (req, res) => {
+    const { fullname, email, subcounty, ward, village, birth, gender, institution, year, admission } = req.body;
+    const sql = `INSERT INTO personal_details (fullname, email, subcounty, ward, village, birth, gender, institution, year, admission) 
+    VALUES (?,?,?,?,?,?,?,?,?,?)`;
+  
+    db.query(sql, [fullname, email, subcounty, ward, village, birth, gender, institution, year, admission], (err, result) => {
+      if (err) {
+        console.error('Error inserting data: ', err);
+        res.status(500).send('Server error');
+      } else {
+        res.json({ message: 'Data inserted successfully', userId: result.insertId });
+      }
+    });
+  });
+  
+  app.post('/api/amount-details', (req, res) => {
+    const { userId, payablewords, payablefigures, outstandingwords, outstandingfigures, accountname, accountnumber, branch } = req.body;
+    const sql = `INSERT INTO amount_details (user_id, payable_words, payable_figures, outstanding_words, outstanding_figures, school_accountname, school_accountnumber, school_branch) 
+    VALUES (?,?,?,?,?,?,?,?)`;
+  
+    db.query(sql, [userId, payablewords, payablefigures, outstandingwords, outstandingfigures, accountname, accountnumber, branch], (err, result) => {
+      if (err) {
+        console.error('Error inserting data: ', err);
+        res.status(500).send('Server error');
+      } else {
+        res.send('Data inserted successfully');
+      }
+    });
+  });
+  
+  app.post('/api/family-details', (req, res) => {
+    const { userId, family_status, disability, parentname, relationship, contact, occupation, guardian_children, working_siblings, studying_siblings, monthly_income } = req.body;
+    const sql = `INSERT INTO family_details (user_id, family_status, disability, parent_guardian_name, relationship, contact_info, occupation, guardian_children, working_siblings, studying_siblings, monthly_income) 
+    VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+  
+    db.query(sql, [userId, family_status, disability, parentname, relationship, contact, occupation, guardian_children, working_siblings, studying_siblings, monthly_income], (err, result) => {
+      if (err) {
+        console.error('Error inserting data: ', err);
+        res.status(500).send('Server error');
+      } else {
+        res.send('Data inserted successfully');
+      }
+    });
+  });
+  
+  app.post('/api/disclosure-details', (req, res) => {
+    const { userId, bursary, bursarysource, bursaryamount, helb, granted, noreason } = req.body;
+    const sql = `INSERT INTO disclosure_details (user_id, receiving_bursary, bursary_source, bursary_amount, applied_helb, helb_outcome, helb_noreason) 
+    VALUES (?,?,?,?,?,?,?)`;
+  
+    db.query(sql, [userId, bursary, bursarysource, bursaryamount, helb, granted, noreason], (err, result) => {
+      if (err) {
+        console.error('Error inserting data: ', err);
+        res.status(500).send('Server error');
+      } else {
+        res.send('Data inserted successfully');
+      }
+    });
+  });
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
