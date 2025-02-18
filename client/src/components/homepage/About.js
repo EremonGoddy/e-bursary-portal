@@ -38,18 +38,15 @@ const About = () => {
         </div>
       </nav>
 
-      {/* Hero Section with Full Background Image */}
-      <div
-        className="container-fluid d-flex flex-column justify-content-center align-items-center text-center text-white"
-        style={{
-          backgroundImage: `url(${aboutImage})`, // Set background image
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "60vh",
-          width: "100%",
-        }}
-      >
-        <div className="w-100 bg-dark bg-opacity-50 p-3 rounded d-flex justify-content-center align-items-center">
+      {/* Hero Section with Image */}
+      <div className="position-relative text-center text-white" style={{ height: "60vh" }}>
+        <img
+          src={aboutImage}
+          alt="About Us"
+          className="img-fluid w-100 h-100 object-fit-cover"
+          style={{ objectFit: "cover" }}
+        />
+        <div className="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-50 p-3 rounded">
           <h2 className="display-4 fw-bold">About Us</h2>
         </div>
       </div>
