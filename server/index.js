@@ -866,7 +866,91 @@ app.get('/api/activity-logs', (req, res) => {
       });
     });
   });
+
+  // POST Profile Form (with token verification)
+app.post('/api/profile-form', (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(403).send('Token is required');
   
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized access');
+  
+      const { fullname, phone_no, national_id, subcounty, ward, position } = req.body;
+  
+      if (!fullname || !phone_no || !national_id || !subcounty || !ward || !position) {
+        return res.status(400).send('All profile fields are required');
+      }
+  
+      const email = decoded.email;
+  
+      const sqlInsert = `
+        INSERT INTO profile_committee (fullname, email, phone_no, national_id, subcounty, ward, position) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+  
+      db.query(sqlInsert, [
+        fullname,
+        email,
+        phone_no,
+        national_id,
+        subcounty,
+        ward,
+        position
+      ], (err, result) => {
+        if (err) {
+          console.error('Error inserting committee data:', err);
+          return res.status(500).send('Error submitting data');
+        }
+  
+        res.status(201).send({
+          message: 'Profile created successfully',
+          data: {
+            fullname,
+            email,
+            phone_no,
+            national_id,
+            subcounty,
+            ward,
+            position
+          }
+        });
+      });
+    });
+  });
+  
+  // GET Committee Report (with token verification)
+  app.get('/api/comreport', (req, res) => {
+    const token = req.headers['authorization'];
+    if (!token) return res.status(403).send('Token is required');
+    
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized access');
+    
+      const sqlGet = `
+        SELECT 
+          CONCAT('REFNO', LPAD(id, 2, '0')) AS reference_number,  -- Generate the reference number
+          fullname, 
+          email,
+          phone_no,
+          national_id,
+          subcounty, 
+          ward, 
+          position
+        FROM profile_committee 
+        WHERE email = ?
+      `;
+    
+      db.query(sqlGet, [decoded.email], (err, result) => {
+        if (err) {
+          console.error('Error fetching data:', err);
+          return res.status(500).send('Error fetching data');
+        }
+        res.json(result[0]); // Only return the specific student's details
+      });
+    });
+  });
+
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
