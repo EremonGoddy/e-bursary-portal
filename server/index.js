@@ -575,7 +575,75 @@ app.post("/api/upload", upload.single("document"), (req, res) => {
     res.status(200).send("File uploaded and saved to database successfully");
   });
 });
-   
+ 
+// Get documents with user details
+app.get("/api/get-document/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log(userId);
+  
+    const sqlGet = `
+      SELECT 
+        ud.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        uploaded_document ud
+      JOIN 
+        personal_details pd 
+      ON 
+        ud.user_id = pd.user_id
+      WHERE pd.user_id = ?;
+    `;
+  
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching family and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
+  // Update user status (Approve/Reject) in the personal_details table
+  app.put("/api/update-status/:id", (req, res) => {
+    const userId = req.params.id;
+    const { status } = req.body; // The status is sent from the frontend (Approve or Reject)
+  
+    const query = "UPDATE personal_details SET status = ? WHERE user_id = ?";
+    db.query(query, [status, userId], (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: "Error updating status" });
+      }
+      res.json({ message: `Status updated to ${status}` });
+    });
+  });
+  
+  // Get bursary details
+  app.get("/api/get-bursary/:id", (req, res) => {
+    const userId = req.params.id; // Get the user ID from the request parameters
+    console.log(userId);
+  
+    const sqlGet = `
+      SELECT 
+        ud.*, pd.fullname, pd.admission, pd.institution 
+      FROM 
+        uploaded_document ud
+      JOIN 
+        personal_details pd 
+      ON 
+        ud.user_id = pd.user_id
+      WHERE pd.user_id = ?;
+    `;
+  
+    db.query(sqlGet, [userId], (error, result) => {
+      if (error) {
+        console.error("Error fetching family and personal details:", error);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.send(result); // Send the result of the joined tables
+      }
+    });
+  });
+  
 // Default route
 app.get("/", (req, res) => {
   res.send("Server is running");
