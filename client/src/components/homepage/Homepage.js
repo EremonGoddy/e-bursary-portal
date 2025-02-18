@@ -18,7 +18,7 @@ const Homepage = () => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
 
 
   // Inline style for button
