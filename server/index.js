@@ -225,6 +225,26 @@ app.post("/api/signin", (req, res) => {
       });
     });
   });
+
+  // Admin details route
+app.get("/api/admin-details", (req, res) => {
+    const sql = "SELECT name, email FROM users WHERE role = ?";
+    const role = "Admin"; // Define the role you want to query.
+  
+    db.query(sql, [role], (err, result) => {
+      if (err) {
+        console.error("Error fetching admin details:", err);
+        return res.status(500).json({ message: "Server error" });
+      }
+  
+      if (result.length === 0) {
+        return res.status(404).json({ message: "Admin not found" });
+      }
+  
+      res.status(200).json(result[0]); // Return the first matching admin.
+    });
+  });
+  
   
 
 // Default route
