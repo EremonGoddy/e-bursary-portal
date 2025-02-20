@@ -1,0 +1,67 @@
+.login{
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(151, 149, 149, 0.8);
+    }
+    
+    .eyes i{
+    position: absolute;
+    margin-left:550px;
+    font-size: 25px;
+    color: grey;
+    cursor: pointer;
+    margin-top: -40px;
+    }
+    .eye i{
+        position: absolute;
+    margin-left: -30px;
+    font-size: 25px;
+        color: grey;
+        cursor: pointer;
+        margin-top:0px;
+        }
+    
+    .form-check{
+    margin-left: 20px;
+    }
+    
+    .form-check1{
+    margin-left: 130px;
+    }
+    
+    .form-check1 label{
+    margin-left: 10px;
+    }
+    
+    .forgot-password{
+    margin-right: 20px;
+    }
+    
+    @media(max-width:768px){
+    .login{
+    padding: 1rem;
+    }
+    
+    .form-check{
+    margin-left: -160px;
+    }
+        
+    .forgot-password{
+    margin-right: -150px;
+    margin-top: -30px;
+    }
+    
+    .eyes i{
+    position: absolute;
+    margin-left:280px;
+    font-size: 25px;
+    color: grey;
+    cursor: pointer;
+    margin-top: -40px;
+    }
+    
+    .form-check1{
+    margin-left:5px;
+        }
+    }
