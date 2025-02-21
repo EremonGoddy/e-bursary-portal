@@ -10,22 +10,23 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: "*", // Change this to your frontend domain for security
+  origin: "https://e-bursary-portal.vercel.app", // Change this to match your frontend Vercel URL
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const db = mysql.createPool({
-host: "localhost",
-user: "root",
-password: "Goddinare3458##",
-database: "ebursary",
-waitForConnections: true,
-connectionLimit: 10,
-queueLimit: 0,
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "Goddinare3458##",
+  database: process.env.DB_NAME || "ebursary",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 // Secret for JWT
