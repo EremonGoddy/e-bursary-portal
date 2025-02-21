@@ -25,8 +25,8 @@ setErrors(newErrors);
 return;
 }
 
-axios.post(`${process.env.REACT_APP_API_URL}/api/signin`, { email, password })
-  .then((response) => {
+axios.post(`${process.env.REACT_APP_API_URL.replace(/\/$/, "")}/api/signin`, { email, password })
+.then((response) => {
     console.log("Login Success:", response.data); // Debugging
     const { token, student, role } = response.data;
     const storage = rememberMe ? localStorage : sessionStorage;

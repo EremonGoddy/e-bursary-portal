@@ -10,10 +10,9 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: "https://e-bursary-portal.vercel.app", // Change this to match your frontend Vercel URL
+  origin: "https://e-bursary-portal-client-32e63ns29-eremon-godwins-projects.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
