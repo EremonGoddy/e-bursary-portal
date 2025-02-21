@@ -25,29 +25,20 @@ setErrors(newErrors);
 return;
 }
 
-axios.post(`${process.env.REACT_APP_API_URL}/api/signin`, { email, password })
-  .then((response) => {
-    console.log("Response:", response.data); // Debugging
-    const { token, student, role } = response.data;
+axios
+.post('${process.env.REACT_APP_API_URL}/api/signin', { email, password })
+.then((response) => {
+const { token, student, role } = response.data;
+const storage = rememberMe ? localStorage : sessionStorage;
+storage.setItem('authToken', token);
+storage.setItem('student', JSON.stringify(student));
 
-    if (!token) {
-      alert("Login failed: No token received");
-      return;
-    }
-
-    const storage = rememberMe ? localStorage : sessionStorage;
-    storage.setItem("authToken", token);
-    storage.setItem("student", JSON.stringify(student));
-
-    if (role === "Student") navigate("/studentdashboard");
-    else if (role === "Admin") navigate("/admindashboard");
-    else if (role === "Committee") navigate("/committeedashboard");
-    else alert("Role not recognized");
-  })
-  .catch((err) => {
-    console.error("Login error:", err.response?.data || err.message);
-    alert(err.response?.data?.message || "Login failed");
-  });
+if (role === 'Student') navigate('/studentdashboard');
+else if (role === 'Admin') navigate('/admindashboard');
+else if (role === 'Committee') navigate('/committeedashboard');
+else alert('Role not recognized');
+})
+.catch((err) => alert(err.response.data.message));
 };
 
 const togglePasswordVisibility = () => {
