@@ -9,23 +9,19 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({
-  origin: "https://e-bursary-portal-client-32e63ns29-eremon-godwins-projects.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const db = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "Goddinare3458##",
-  database: process.env.DB_NAME || "ebursary",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+host: "localhost",
+user: "root",
+password: "Goddinare3458##",
+database: "ebursary",
+waitForConnections: true,
+connectionLimit: 10,
+queueLimit: 0,
 });
 
 // Secret for JWT
