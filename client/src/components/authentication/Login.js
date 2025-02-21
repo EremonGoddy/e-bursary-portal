@@ -26,7 +26,7 @@ return;
 }
 
 axios
-.post('http://localhost:5000/api/signin', { email, password })
+.post('${process.env.REACT_APP_API_URL}/api/signin', { email, password })
 .then((response) => {
 const { token, student, role } = response.data;
 const storage = rememberMe ? localStorage : sessionStorage;
