@@ -1,14 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "main": "api/signin.js",
   "scripts": {
     "dev": "nodemon api/signin.js",
     "start": "node api/signin.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.1",
     "cors": "^2.8.5",
@@ -20,4 +17,3 @@
     "nodemailer": "^6.10.0"
   }
 }
-
