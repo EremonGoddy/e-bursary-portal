@@ -1,10 +1,10 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/signin", "dest": "/api/signin.js" },
-    { "src": "/api/student", "dest": "/api/student.js" },
-    { "src": "/api/updatestudent", "dest": "/api/updatestudent.js" },
-    { "src": "/api/verify-password", "dest": "/api/verify-password.js" }
+    { "src": "/server/signin", "dest": "/server/signin.js" },
+    { "src": "/server/student", "dest": "/server/student.js" },
+    { "src": "/server/updatestudent", "dest": "/server/updatestudent.js" },
+    { "src": "/server/verify-password", "dest": "/server/verify-password.js" }
   ],
   "env": {
     "DB_HOST": "your_db_host",
