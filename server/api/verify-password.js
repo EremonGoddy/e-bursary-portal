@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const connectDB = require("./db");
+const connectDB = require("../db");
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") return res.status(405).json({ message: "Method Not Allowed" });

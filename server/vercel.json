@@ -1,8 +1,11 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "api/*.js", "use": "@vercel/node" }
+  ],
   "routes": [
     { "src": "/api/signin", "dest": "/api/signin.js" },
-    { "src": "/api/student", "dest": "/api/student.js" },
+    { "src": "/api/studentdata", "dest": "/api/studentdata.js" },
     { "src": "/api/updatestudent", "dest": "/api/updatestudent.js" },
     { "src": "/api/verify-password", "dest": "/api/verify-password.js" }
   ],
