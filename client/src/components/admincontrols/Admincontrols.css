@@ -129,13 +129,10 @@
     transition: 0.3s;
   }
   
-  
   .sidebar.active ~ .main-content {
     margin-left: 250px;
     width: calc(100% - 250px);
   }
-
-
   
   .d-flex {
     display: flex;
@@ -233,8 +230,6 @@
   .updateProfile .form-control {
     width: 70%;
   }
-
-
   
   @media (max-width: 768px) {
     .d-flex {

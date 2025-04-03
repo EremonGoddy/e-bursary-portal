@@ -10,6 +10,7 @@ const StudentDashboard = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [isEditFormVisible, setEditFormVisible] = useState(false); // State for edit form visibility
   const [formData, setFormData] = useState({});
+  const [userName, setUserName] = useState(''); // State for storing user's name
   const navigate = useNavigate();
 
   // Function to toggle sidebar active state
@@ -19,9 +20,13 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem('authToken');
+    const name = sessionStorage.getItem('userName');
+
     if (!token) {
       navigate('/signin'); // Redirect if not authenticated
     } else {
+      setUserName(name); // Set the user's name from session storage
+
       axios
         .get('http://localhost:5000/api/student', {
           headers: { Authorization: token },
@@ -75,7 +80,7 @@ const StudentDashboard = () => {
         <div className="logos">
           <h2>EBursary</h2>
         </div>
-        <h1>Welcome: {studentDetails.fullname}</h1>
+        <h1>Welcome: {userName}</h1> {/* Display the user's name */}
         <div className="users">
           <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
         </div>
@@ -151,20 +156,27 @@ const StudentDashboard = () => {
             <div className="row mb-4">
               <div className="col-md-4 mb-4">
                 {/* Bursary funds allocated */}
-                {isStudentRegistered && (
-                  <div className="bursary-content p-4 border bg-light rounded">
-                    <h2>Bursary funds allocated:</h2>
-                    <p>{studentDetails.bursary}</p>
-                    <i className="bi bi-cash"></i>
-                  </div>
-                )}
+                {isStudentRegistered ? (
+                  <div>
+                    <div className="bursary-content p-4 border bg-light rounded">
+                      <h2>Bursary funds allocated:</h2>
+                      <p>{studentDetails.bursary}</p>
+                      <i className="bi bi-cash"></i>
+                    </div>
 
-                {/* Status of the application */}
-                {isStudentRegistered && (
-                  <div className="status-content p-4 border bg-light rounded mt-4">
-                    <h2>Status of the application:</h2>
-                    <p>{studentDetails.status}</p>
-                    <i className="bi bi-check2-all"></i>
+                    {/* Status of the application */}
+                    <div className="status-content p-4 border bg-light rounded mt-4">
+                      <h2>Status of the application:</h2>
+                      <p>{studentDetails.status}</p>
+                      <i className="bi bi-check2-all"></i>
+                    </div>
+                  </div>
+                ) : (
+                  <div className=" d-flex justify-content-center align-items-center" style={{ height: '100%' }} >
+                    <div className="empty-dashboard p-4 border bg-light rounded text-center">
+                      <h2>Dashboard is empty</h2>
+                      <p>Please {userName} click on the 'Apply' icon in the sidebar to complete your information.</p>
+                    </div>
                   </div>
                 )}
               </div>

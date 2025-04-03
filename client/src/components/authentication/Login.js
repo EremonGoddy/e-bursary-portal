@@ -4,50 +4,48 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Login.css";
 
-
 const Login = () => {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [errors, setErrors] = useState({});
-const [showPassword, setShowPassword] = useState(false);
-const [rememberMe, setRememberMe] = useState(false);
-const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+    if (!email) newErrors.email = '*Please provide an email';
+    if (!password) newErrors.password = '*Please provide a password';
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
+    axios
+      .post('http://localhost:5000/api/signin', { email, password })
+      .then((response) => {
+        const { token, student, role, name } = response.data;
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem('authToken', token);
+        storage.setItem('student', JSON.stringify(student));
+        storage.setItem('userName', name); // Save user's name in session storage
 
-const handleSubmit = (e) => {
-e.preventDefault();
-const newErrors = {};
-if (!email) newErrors.email = '*Please provide an email';
-if (!password) newErrors.password = '*Please provide a password';
-if (Object.keys(newErrors).length > 0) {
-setErrors(newErrors);
-return;
-}
+        if (role === 'Student') navigate('/studentdashboard');
+        else if (role === 'Admin') navigate('/admindashboard');
+        else if (role === 'Committee') navigate('/committeedashboard');
+        else alert('Role not recognized');
+      })
+      .catch((err) => alert(err.response.data.message));
+  };
 
-axios
-.post('http://localhost:5000/api/signin', { email, password })
-.then((response) => {
-const { token, student, role } = response.data;
-const storage = rememberMe ? localStorage : sessionStorage;
-storage.setItem('authToken', token);
-storage.setItem('student', JSON.stringify(student));
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
-if (role === 'Student') navigate('/studentdashboard');
-else if (role === 'Admin') navigate('/admindashboard');
-else if (role === 'Committee') navigate('/committeedashboard');
-else alert('Role not recognized');
-})
-.catch((err) => alert(err.response.data.message));
-};
-
-const togglePasswordVisibility = () => {
-setShowPassword((prevState) => !prevState);
-};
-
-return (
-<div className="container d-flex justify-content-center align-items-center min-vh-100">
-<div className=" login col-12 col-md-8 col-lg-6">
+  return (
+    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <div className=" login col-12 col-md-8 col-lg-6">
         <h2>Sign in</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3" style={{textAlign:"left"}}>

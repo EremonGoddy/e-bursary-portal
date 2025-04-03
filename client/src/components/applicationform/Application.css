@@ -1,0 +1,247 @@
+/* Top Bar Styling */
+.topbars {
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    padding: 10px 20px;
+  }
+  
+  .topbars .logos {
+    margin-top: 10px;
+  }
+  
+  .topbars .logos h2 {
+  }
+  
+  .topbars h1 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-left: 1200px;
+  }
+  
+  .topbars .users {
+    margin-top: 15px;
+    margin-left: -50px;
+  }
+  
+  .topbars i {
+    font-size: 1.8rem;
+    margin-right: 40px;
+    margin-top: 15px;
+  }
+  
+  /* Sidebar Styling */
+  .sidebars {
+    width: 60px;
+    height: 100vh;
+    background: #4070f4;
+    position: fixed;
+    top: 63px; /* Adjusted to account for the top bar */
+    left: 0;
+    transition: width 0.3s ease;
+    padding-top: 20px;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+  
+  .sidebars i#btn {
+    font-size: 1.8rem;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  
+  .sidebars.active {
+    width: 250px;
+  }
+  
+  .sidebars.active i#btn {
+    transform: translateX(80px);
+  }
+  
+  .sidebars ul {
+    padding-left: 0;
+  }
+  
+  .sidebars ul li {
+    list-style: none;
+    padding: 15px 10px;
+    text-align: center;
+    position: relative; /* Add relative positioning for tooltips */
+  }
+  
+  .sidebars ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sidebars ul li a i {
+    font-size: 24px;
+  }
+  
+  .sidebars ul li .links-name {
+    display: none; /* Hide link names by default */
+  }
+  
+  .sidebars ul li .tooltip {
+    position: absolute;
+    left: 60px;
+    height: 35px;
+    top: 50%;
+    margin-top: -15px;
+    transform: translateY(-50%);
+    border-radius: 5px;
+    width: 122px;
+    background: #4070f4;
+    color: white;
+    font-weight: 600;
+    line-height: 35px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .sidebars ul li:hover .tooltip {
+    opacity: 1;
+  }
+  
+  .sidebars.active ul li a {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+  
+  .sidebars.active ul li .links-name {
+    display: inline; /* Show link names when sidebar is active */
+    margin-left: 10px;
+  }
+  
+  .sidebars.active ul li .tooltip {
+    display: none;
+  }
+  
+  /* Apply Form Styling */
+  .apply-form {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: 100px;
+    margin-top: 100px;
+  }
+  
+  .sidebar.active ~ .col-md-10 {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+  
+  .apply-form .form-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .apply-form .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Report Container Styling */
+  .report-container {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: 100px;
+    margin-top: 100px; /* Adjust to avoid overlap with the top bar */
+  }
+  
+  .report-container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Setting Container Styling */
+  .setting-container {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: 100px;
+    margin-top: 100px; /* Adjust to avoid overlap with the top bar */
+  }
+  
+  .setting-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 768px) {
+  
+    .topbars {
+      height: 60px;
+    }
+  
+    .topbars .logos {
+      margin-left: -280px;
+    }
+  
+    .topbars .logos h2 {
+      font-size: 1.6rem;
+      margin-top: 10px;
+    }
+  
+    .topbars h1 {
+      font-size: 1rem;
+      margin-top: -32px;
+      margin-left: 60px;
+    }
+  
+    .topbars .users img {
+      width: 30px;
+      height: 30px;
+      margin-top: -95px;
+      margin-left: 310px;
+    }
+  
+    .topbars i {
+      margin-top: -70px;
+      margin-left: 355px;
+      font-size: 1.4rem;
+    }
+  
+    /* Apply Form Styling */
+    .apply-form {
+      margin: 10px;
+      margin-left: 60px;
+      margin-top: 75px;
+    }
+  
+    .report-container{
+    width: 330px;
+    margin-left: 58px;
+    }
+  
+    .report-container table{
+    margin-left: -10px;
+    }
+    .report-container .table th{
+    font-size: 12px;
+    }
+  
+    .report-container .table td{
+    font-size: 12px;
+    }
+    .setting-container{
+    width: 310px;
+    margin-left: 5px;
+    }
+  }
