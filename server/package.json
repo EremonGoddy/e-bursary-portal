@@ -11,15 +11,15 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.2",
     "nodemailer": "^6.10.0",
-    "pg": "^8.14.1",                
-    "pg-hstore": "^2.3.4"           
+    "pg": "^8.14.1",
+    "pg-hstore": "^2.3.4"
   },
   "scripts": {
     "start": "node index.js",
-    "build": "echo 'No build needed'",         
-    "dev": "nodemon index.js"         
+    "build": "echo 'No build needed'",
+    "dev": "nodemon index.js"
   },
   "devDependencies": {
-    "nodemon": "^3.0.0"                
+    "nodemon": "^3.0.0"
   }
 }
