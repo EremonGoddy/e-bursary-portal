@@ -39,12 +39,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "frontend": "react-scripts start",
-    "frontend-build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+   "start": "node index.js",
+  "build": "echo 'No build needed'",
+  "dev": "nodemon index.js"
   },
   "eslintConfig": {
     "extends": [
