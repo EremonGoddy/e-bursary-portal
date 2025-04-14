@@ -15,7 +15,8 @@
     "pg-hstore": "^2.3.4"           
   },
   "scripts": {
-    "start": "node index.js",         
+    "start": "node index.js",
+    "build": "echo 'No build needed'",         
     "dev": "nodemon index.js"         
   },
   "devDependencies": {
