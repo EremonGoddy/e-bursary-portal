@@ -32,7 +32,7 @@ const Register = () => {
       return;
     }
 
-    axios.post('http://bursary-backend.onrender.com/api/post', formData)
+    axios.post('https://bursary-backend.onrender.com/api/post', formData)
       .then(() => {
         alert('Registration successful');
         navigate('/login');
