@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     axios
-      .post('http://localhost:5000/api/signin', { email, password })
+      .post('http://bursary-backend.onrender.com/api/signin', { email, password })
       .then((response) => {
         const { token, student, role, name } = response.data;
         const storage = rememberMe ? localStorage : sessionStorage;
