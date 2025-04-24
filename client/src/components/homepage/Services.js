@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import serviceImage from "../../assets/payment.jpg"; // Import the image
+
 
 const Services = () => {
 
@@ -67,7 +67,7 @@ Contact
 <div
 className=" background">
 <img
-src={serviceImage}
+src="/images/payment.jpg"
 alt="Our Services"
 className="d-block w-100 img-fluid"
 />
