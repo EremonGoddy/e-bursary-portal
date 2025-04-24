@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import patient from '../../assets/patient.png';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -101,7 +100,7 @@ const AdminSetting = () => {
         </div>
         <h1 className='welcoming'>Welcome: {adminDetails.name}</h1>
         <div className="user">
-          <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
+        <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
       </div>
 

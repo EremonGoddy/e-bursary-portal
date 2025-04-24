@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import patient from '../../assets/patient.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from 'react-router-dom';
 import './Dashboard.css'; // Import the CSS file
+
+
 
 const StudentDashboard = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -82,7 +83,7 @@ const StudentDashboard = () => {
         </div>
         <h1>Welcome: {userName}</h1> {/* Display the user's name */}
         <div className="users">
-          <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
+        <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
         <i className="bi bi-bell-fill"></i>
       </div>
@@ -190,7 +191,7 @@ const StudentDashboard = () => {
                       <hr />
                     </div>
                     <div className="card-header bg-transparent text-center">
-                      <img className="profile-img" src={patient} alt="" width="100" />
+                      <img className="profile-img" src='/images/patient.png'   alt="" width="100" />
                       <h5>{studentDetails.fullname}</h5>
                       <h6>Student</h6>
                     </div>

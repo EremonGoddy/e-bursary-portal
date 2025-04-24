@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Application.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import patient from '../../assets/patient.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Setting = () => {
@@ -89,7 +88,7 @@ const Setting = () => {
         </div>
         <h1>Welcome: {studentDetails.fullname}</h1>
         <div className="users">
-          <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
+        <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
         <i className="bi bi-bell-fill"></i>
       </div>

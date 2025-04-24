@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Dashboard.css';
 
-const patientImage = '/images/patient.png';
-
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const AdminDashboard = () => {
@@ -123,8 +121,8 @@ const AdminDashboard = () => {
           <h2>EBursary</h2>
         </div>
         <h1 className='welcoming'>Welcome: {adminDetails.name}</h1>
-        <div className="users">
-        <img src={patientImage} alt="User" className="rounded-circle" width="40" height="40" />
+      <div className="users">   
+  <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
         <i className="bi bi-bell-fill"></i>
       </div>

@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Admincontrols.css';
-import patient from '../../assets/patient.png';
 
 const MonitoringApplication = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -61,7 +60,7 @@ const MonitoringApplication = () => {
         </div>
         <h1 className='welcoming'>Welcome: {adminDetails.name}</h1>
         <div className="user">
-          <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
+        <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import patient from '../../assets/patient.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Profile';
@@ -65,7 +64,7 @@ const UserDetails = () => {
           <h5>Welcome: {committeeDetails.fullname}</h5>
         </div>
         <div className="col-md-1 text-end">
-          <img src={patient} alt="User" className="rounded-circle" width="40" height="40" />
+        <img src='/images/patient.png' alt="User" className="rounded-circle" width="40" height="40" />
         </div>
         <div className="col-md-1 text-end">
           <i className="bi bi-bell-fill"></i>
