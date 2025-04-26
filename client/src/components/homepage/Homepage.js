@@ -91,7 +91,7 @@ const Homepage = () => {
           ))}
         </div>
       </div>
-
+      <h1 className="text-3xl text-green-600 font-bold">Tailwind is working!</h1>
       <div className="content-section my-3">
         <div className="row">
           {/* Program Overview */}

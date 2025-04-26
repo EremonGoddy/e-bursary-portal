@@ -40,7 +40,7 @@ const About = () => {
       {/* Hero Section with Image */}
       <div className="background">
         <img
-          src="/images/about.jpg"
+          src="/images/newabout.jpg"
           alt="About Us"
           className="d-block w-100 img-fluid"
         />
